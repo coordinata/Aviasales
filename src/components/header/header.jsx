@@ -4,8 +4,7 @@ import classes from "./header.module.scss";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  const filterActive = useSelector((state) => state.filter.filterState);
-
+  const filterActive = useSelector((state) => state.filter.filter); // извлекаем фильтр из состояния Redux
   return (
     <div className={classes.header}>
       <img src={Logo} alt="Logo" />

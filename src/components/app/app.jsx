@@ -1,5 +1,5 @@
 import React from "react";
-import classes from './app.module.scss'
+import classes from "./app.module.scss";
 import Header from "../header/header";
 import Sidebar from "../sidebar/sidebar";
 import Filter from "../filter/filter";
