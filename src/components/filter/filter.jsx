@@ -14,19 +14,19 @@ const Filter = () => {
   return (
     <div className={classes.filter}>
       <button
-        onClick={() => activeFilterClick("low_price")}
+        onClick={() => activeFilterClick("Самый дешевый")}
         className={classes.low_price}
       >
         Самый дешевый
       </button>
       <button
-        onClick={() => activeFilterClick("faster")}
+        onClick={() => activeFilterClick("Самый быстрый")}
         className={classes.faster}
       >
         Самый быстрый
       </button>
       <button
-        onClick={() => activeFilterClick("optimal")}
+        onClick={() => activeFilterClick("Оптимальный")}
         className={classes.optimal}
       >
         Оптимальный
