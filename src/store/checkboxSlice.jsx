@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { filter: "" };
+const initialState = { checkbox: "" };
 
-const filterSlice = createSlice({
-  name: "filter",
+const checkboxSlice = createSlice({
+  name: "checkbox",
   initialState,
   reducers: {
-    filterState: (state, action) => {
-      state.filter = action.payload;
+    checkboxState: (state, action) => {
+      state.checkbox = action.payload;
     },
   },
 });
 
-export const { filterState } = filterSlice.actions;
-export default filterSlice.reducer;
+export const { checkboxState } = checkboxSlice.actions;
+export default checkboxSlice.reducer;

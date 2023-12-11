@@ -7,26 +7,26 @@ const Filter = () => {
 
   const dispatch = useDispatch();
 
-  const handleFilterClick = (filterType) => {
+  const activeFilterClick = (filterType) => {
     dispatch(filterState(filterType));
   };
 
   return (
     <div className={classes.filter}>
       <button
-        onClick={() => handleFilterClick("low_price")}
+        onClick={() => activeFilterClick("low_price")}
         className={classes.low_price}
       >
         Самый дешевый
       </button>
       <button
-        onClick={() => handleFilterClick("faster")}
+        onClick={() => activeFilterClick("faster")}
         className={classes.faster}
       >
         Самый быстрый
       </button>
       <button
-        onClick={() => handleFilterClick("optimal")}
+        onClick={() => activeFilterClick("optimal")}
         className={classes.optimal}
       >
         Оптимальный
