@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, useDispatch } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
@@ -7,20 +7,26 @@ const initialState = {
 
 export const getId = createAsyncThunk(
   "id/getId",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     const res = await axios.get("https://front-test.dev.aviasales.ru/search");
-    useDispatch(setId(res.data))
-
+    dispatch(setId(res.searchId));
   }
 );
 
 export const idSlice = createSlice({
   name: "id",
   initialState,
-  reducers: { setId: (state, action) => {
-    state.id = action.payload
-  } },
+  reducers: {
+    setId: (state, action) => {
+      state.id = action.payload;
+    },
+  },
+  extraReducers: {
+    [getId.fulfilled]: () => console.log("fulfilled"),
+    [getId.pending]: () => console.log("pending"),
+    [getId.rejected]: () => console.log("rejected"),
+  },
 });
 
-export const {setId} = idSlice.actions
-export default idSlice.reducer
+export const { setId } = idSlice.actions;
+export default idSlice.reducer;
