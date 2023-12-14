@@ -2,14 +2,21 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  id: [],
+  id: null,
 };
 
 export const getId = createAsyncThunk(
   "id/getId",
   async (_, { rejectWithValue, dispatch }) => {
-    const res = await axios.get("https://front-test.dev.aviasales.ru/search");
-    dispatch(setId(res.searchId));
+    try {
+      const res = await axios.get(
+        "https://aviasales-test-api.kata.academy/search"
+      );
+      dispatch(setId(res.data.searchId));
+      // return res.data.searchId; //  результат для использования в .then
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
 
@@ -20,11 +27,6 @@ export const idSlice = createSlice({
     setId: (state, action) => {
       state.id = action.payload;
     },
-  },
-  extraReducers: {
-    [getId.fulfilled]: () => console.log("fulfilled"),
-    [getId.pending]: () => console.log("pending"),
-    [getId.rejected]: () => console.log("rejected"),
   },
 });
 
