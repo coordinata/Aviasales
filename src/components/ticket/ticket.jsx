@@ -2,11 +2,12 @@ import React from "react";
 import classes from "../ticket/ticket.module.scss";
 import Logo from "../../img/S7-Logo.svg";
 
-const Ticket = () => {
+const Ticket = ({ ticket }) => {
+  const formattedPrice = ticket.price.toLocaleString("ru-RU");
   return (
     <div className={classes.ticket}>
       <div className={classes.ticket_header}>
-        <div className={classes.price}>13 400 P</div>
+        <div className={classes.price}>{formattedPrice + " Р"}</div>
         <div className={classes.logo}>
           <img src={Logo} alt="Logo" />
         </div>
@@ -15,12 +16,12 @@ const Ticket = () => {
       <div className={classes.ticket_data_wrapper}>
         <div className={classes.ticket_data}>
           <p className={classes.ticket_data_block__title}>MOW – HKT</p>
-          <p>10:45 – 08:00</p>
+          <p>{ticket.segments[0].date}</p>
         </div>
 
         <div className={classes.ticket_data}>
           <p className={classes.ticket_data_block__title}>В пути</p>
-          <p>21ч 15м</p>
+          <p>{ticket.segments[0].duration}</p>
         </div>
 
         <div className={classes.ticket_data}>
@@ -30,12 +31,12 @@ const Ticket = () => {
 
         <div className={classes.ticket_data}>
           <p className={classes.ticket_data_block__title}>MOW – HKT</p>
-          <p>11:20 – 00:50</p>
+          <p>{ticket.segments[1].date}</p>
         </div>
 
         <div className={classes.ticket_data}>
           <p className={classes.ticket_data_block__title}>В пути</p>
-          <p>13ч 30м</p>
+          <p>{ticket.segments[1].duration}</p>
         </div>
 
         <div className={classes.ticket_data}>
