@@ -9,7 +9,7 @@ const TicketsList = () => {
  
   return (
     <ul className={classes.tickets_list}>
-      {tickets.map((ticket) => (
+      {tickets.slice(0, 5).map((ticket) => (  //используйте метод slice(0, 5) для выборки только первых 5 элементов
         <li key={uuidv4()} className={classes.ticket_li}>
           <Ticket ticket={ticket} />
         </li>

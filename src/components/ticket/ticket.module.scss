@@ -1,42 +1,46 @@
 .ticket {
-    padding: 20px;
-    border-radius: 5px;
-    background: #fff;
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-  
-    &_header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-  
-      .price {
-        color: #2196f3;
-        font-size: 24px;
-        padding-top: 6px;
-      }
-  
-      .logo {
-        width: 140px;
-      }
+  padding: 20px;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .price {
+      color: #2196f3;
+      font-size: 24px;
+      padding-top: 6px;
     }
-  
-    &_data {
-      padding-right: 50px;
-      padding-bottom: 10px;
-  
-      &_wrapper {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        flex-wrap: wrap;
-      }
-  
-      &_block:last-child {
-        width: 140px;
-      }
-      &_block__title {
-        color: #a0b0b9;
-      }
+
+    .logo {
+      width: 140px;
     }
   }
+
+  &_data {
+    padding-right: 50px;
+    padding-bottom: 10px;
+
+    &_wrapper {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    &_block:last-child {
+      width: 140px;
+    }
+    &_block__title {
+      color: #a0b0b9;
+    }
+  }
+
+  .lowercase {
+    text-transform: lowercase;
+  }
+}
