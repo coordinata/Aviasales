@@ -7,16 +7,15 @@ const initialState = {
 
 export const getTicket = createAsyncThunk(
   "ticket/getTicket",
-  async (id, { rejectWithValue, dispatch}) => {
+  async (id, { rejectWithValue, dispatch }) => {
     try {
       const res = await axios.get(
-        `https://aviasales-test-api.kata.academy/tickets?searchId=${id}
-        )}`
+        `https://aviasales-test-api.kata.academy/tickets?searchId=${id}`
       );
-      dispatch(setTicket(res.data.searchId));
-      // return res.data.searchId; //  результат для использования в .then
+      const ticketData = res.data.tickets;
+      dispatch(setTicket(ticketData));
     } catch (error) {
-      return rejectWithValue(error.message);
+      throw new Error("Билеты не найдены");
     }
   }
 );

@@ -13,7 +13,6 @@ export const getId = createAsyncThunk(
         "https://aviasales-test-api.kata.academy/search"
       );
       dispatch(setId(res.data.searchId));
-      // return res.data.searchId; //  результат для использования в .then
     } catch (error) {
       return rejectWithValue(error.message);
     }
