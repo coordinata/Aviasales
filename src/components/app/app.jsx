@@ -6,12 +6,22 @@ import Filter from "../filter/filter";
 import TicketsList from "../ticket-list/ticket-list";
 import Button from "../button/button";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getId } from "../../store/idSlice";
+import { getTicket } from "../../store/ticketSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  useEffect(() => {dispatch(getId())}, [dispatch]);
+  const id = useSelector((state) => state.id.id);
+
+  useEffect(() => {
+    dispatch(getId());
+  }, [dispatch]);
+  
+  useEffect(() => {
+    dispatch(getTicket(id));
+  }, [dispatch, id]);
+
   return (
     <div className={classes.app}>
       <div className={classes.wrapper}>
