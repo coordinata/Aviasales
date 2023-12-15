@@ -1,6 +1,5 @@
 import React from "react";
 import classes from "../ticket/ticket.module.scss";
-import Logo from "../../img/S7-Logo.svg";
 
 const Ticket = ({ ticket }) => {
   const formatPrice = ticket.price.toLocaleString("ru-RU");
@@ -27,6 +26,22 @@ const Ticket = ({ ticket }) => {
     return `${hoursDate}:${minutesDate} - ${formattedHours}:${formattedMinutes}`;
   };
 
+  const stopsData = (ticket, num) => {
+    const arr = ticket.segments[num].stops.length;
+    switch (arr) {
+      case 0:
+        return "Без пересадок";
+      case 1:
+        return "1 пересадка";
+      case 2:
+        return "2 пересадки";
+      case 3:
+        return "3 пересадки";
+      default:
+        return " "
+    }
+  };
+
   return (
     <div className={classes.ticket}>
       <div className={classes.ticket_header}>
@@ -50,7 +65,9 @@ const Ticket = ({ ticket }) => {
         </div>
 
         <div className={classes.ticket_data}>
-          <p className={classes.ticket_data_block__title}>2 пересадки</p>
+          <p className={classes.ticket_data_block__title}>
+            {stopsData(ticket, 0)}
+          </p>
           <p>{ticket.segments[0].stops.join(", ")}</p>
         </div>
 
@@ -67,7 +84,9 @@ const Ticket = ({ ticket }) => {
         </div>
 
         <div className={classes.ticket_data}>
-          <p className={classes.ticket_data_block__title}>1 пересадка</p>
+          <p className={classes.ticket_data_block__title}>
+            {stopsData(ticket, 1)}
+          </p>
           <p>{ticket.segments[1].stops.join(", ")}</p>
         </div>
       </div>
