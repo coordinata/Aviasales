@@ -4,7 +4,6 @@ import Header from "../header/header";
 import Sidebar from "../sidebar/sidebar";
 import Filter from "../filter/filter";
 import TicketsList from "../ticket-list/ticket-list";
-import Button from "../button/button";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getId } from "../../store/idSlice";
@@ -33,7 +32,6 @@ const App = () => {
           <div>
             <Filter />
             <TicketsList />
-            <Button />
           </div>
         </div>
       </div>
