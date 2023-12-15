@@ -17,11 +17,13 @@ const Ticket = ({ ticket }) => {
 
     const hoursDate = date.getUTCHours();
     const minutesDate = date.getUTCMinutes();
-    
-    date.setHours(date.getHours() + hours); 
-    date.setMinutes(date.getMinutes() + minutes); 
-    const formattedHours = (date.getUTCHours() < 10 ? "0" : "") + date.getUTCHours();
-    const formattedMinutes = (date.getUTCMinutes() < 10 ? "0" : "") + date.getUTCMinutes();
+
+    date.setHours(date.getHours() + hours);
+    date.setMinutes(date.getMinutes() + minutes);
+    const formattedHours =
+      (date.getUTCHours() < 10 ? "0" : "") + date.getUTCHours();
+    const formattedMinutes =
+      (date.getUTCMinutes() < 10 ? "0" : "") + date.getUTCMinutes();
     return `${hoursDate}:${minutesDate} - ${formattedHours}:${formattedMinutes}`;
   };
 
@@ -30,7 +32,7 @@ const Ticket = ({ ticket }) => {
       <div className={classes.ticket_header}>
         <div className={classes.price}>{formatPrice + " Р"}</div>
         <div className={classes.logo}>
-          <img src={Logo} alt="Logo" />
+          <img src={`//pics.avs.io/99/36/${ticket.carrier}.png`} alt="Logo" />
         </div>
       </div>
 
