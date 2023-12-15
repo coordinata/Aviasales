@@ -26,10 +26,9 @@
     padding-bottom: 10px;
 
     &_wrapper {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       margin-bottom: 10px;
-      flex-wrap: wrap;
     }
 
     &_block:last-child {
