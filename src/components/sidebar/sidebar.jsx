@@ -1,57 +1,61 @@
-import React, { useState, useEffect } from "react";
-import classes from "./sidebar.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { setCheckboxState } from "../../store/checkboxSlice";
+import classes from "./sidebar.module.scss"
 
 const Sidebar = () => {
-  const [allTransfer, setAllTransfer] = useState(false);
-  const [noTransfer, setNoTransfer] = useState(false);
-  const [oneTransfer, setOneTransfer] = useState(false);
-  const [twoTransfer, setTwoTransfer] = useState(false);
-  const [treeTransfer, setTreeTransfer] = useState(false);
+  const {
+    allTransfer,
+    noTransfer,
+    oneTransfer,
+    twoTransfer,
+    treeTransfer
+  } = useSelector((state) => state.checkbox);
+
+  const dispatch = useDispatch();
 
   const handleTransferChange = (e) => {
     const name = e.target.name;
     const value = e.target.checked;
 
+    let payload = {};
+
     switch (name) {
       case "allTransfer":
-        setAllTransfer(value);
-        setNoTransfer(value);
-        setOneTransfer(value);
-        setTwoTransfer(value);
-        setTreeTransfer(value);
+        payload = {
+          allTransfer: value,
+          noTransfer: value,
+          oneTransfer: value,
+          twoTransfer: value,
+          treeTransfer: value
+        };
         break;
       case "noTransfer":
-        setNoTransfer(value);
+        payload = { noTransfer: value };
         break;
       case "oneTransfer":
-        setOneTransfer(value);
+        payload = { oneTransfer: value };
         break;
       case "twoTransfer":
-        setTwoTransfer(value);
+        payload = { twoTransfer: value };
         break;
       case "treeTransfer":
-        setTreeTransfer(value);
+        payload = { treeTransfer: value };
         break;
       default:
         break;
     }
 
     if (!value) {
-      setAllTransfer(false);
+      payload = { ...payload, allTransfer: false };
     } else {
       if (noTransfer && oneTransfer && twoTransfer && treeTransfer) {
-        setAllTransfer(true);
+        payload = { ...payload, allTransfer: true };
       }
     }
+
+    dispatch(setCheckboxState(payload));
   };
 
-  useEffect(() => {
-    if (noTransfer && oneTransfer && twoTransfer && treeTransfer) {
-      setAllTransfer(true);
-    } else {
-      setAllTransfer(false);
-    }
-  }, [noTransfer, oneTransfer, twoTransfer, treeTransfer]);
 
   return (
     <div className={classes.sidebar}>

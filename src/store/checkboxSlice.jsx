@@ -1,36 +1,23 @@
-// import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-// const checkboxTrue = new Set();
+const initialState = {
+  allTransfer: false,
+  noTransfer: false,
+  oneTransfer: false,
+  twoTransfer: false,
+  treeTransfer: false
+};
 
-// export const initialState = checkboxTrue;
+export const checkboxSlice = createSlice({
+  name: "checkbox",
+  initialState: initialState,
+  reducers: {
+    setCheckboxState: (state, action) => {
+      return { ...state, ...action.payload };
+    },
+  },
+});
 
-// export const checkboxSlice = createSlice({
-//   name: "checkbox",
-//   initialState: initialState,
-//   reducers: {
-//     checkboxState: (state, action) => {
-//       const checkbox = action.payload;
+export const { setCheckboxState } = checkboxSlice.actions;
 
-//       if (checkbox === "Все") {
-//         if (state.has(checkbox)) {
-//           state.delete(checkbox);
-//         } else {
-//           state.add(checkbox);
-//         }
-//       } else {
-//         if (state.has("Все")) {
-//           state.delete("Все");
-//         }
-
-//         if (state.has(checkbox)) {
-//           state.delete(checkbox);
-//         } else {
-//           state.add(checkbox);
-//         }
-//       }
-//     },
-//   },
-// });
-
-// export const { checkboxState } = checkboxSlice.actions;
-// export default checkboxSlice.reducer;
+export default checkboxSlice.reducer;
