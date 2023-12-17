@@ -98,12 +98,20 @@ const TicketsList = () => {
     setVisibleTickets((prevVisibleTickets) => prevVisibleTickets + 5);
   };
 
-  if (filter === "") {
+  const initialState = {
+    allTransfer: false,
+    noTransfer: false,
+    oneTransfer: false,
+    twoTransfer: false,
+    treeTransfer: false
+  };
+
+  if (filter === "" || JSON.stringify(checkbox) === JSON.stringify(initialState)) {
     return (
       <div>
         <Online>
           <Alert
-            message="По заданным фильтрам билетов не найдено"
+            message="Выберите фильтры для получения информации о нужных билетах"
             type="info"
             style={{
               color: "#4a4a4a",
