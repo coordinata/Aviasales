@@ -38,7 +38,7 @@ const Ticket = ({ ticket }) => {
       case 3:
         return "3 пересадки";
       default:
-        return " "
+        return " ";
     }
   };
 
@@ -72,14 +72,14 @@ const Ticket = ({ ticket }) => {
         </div>
 
         <div className={classes.ticket_data}>
-          <p className={classes.ticket_data_block__title}>MOW – HKT</p>
-          <p>{formatDate(ticket, 0, formatTime(ticket, 0))}</p>
+          <p className={classes.ticket_data_block__title}>HKT – MOW</p>
+          <p>{formatDate(ticket, 1, formatTime(ticket, 1))}</p>
         </div>
 
         <div className={classes.ticket_data}>
           <p className={classes.ticket_data_block__title}>В пути</p>
-          <p className={classes.lowercase}>{`${formatTime(ticket, 0).hours}ч ${
-            formatTime(ticket, 0).minutes
+          <p className={classes.lowercase}>{`${formatTime(ticket, 1).hours}ч ${
+            formatTime(ticket, 1).minutes
           }м`}</p>
         </div>
 
