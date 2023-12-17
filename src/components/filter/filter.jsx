@@ -1,9 +1,13 @@
 import React from "react";
 import classes from "./filter.module.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { filterState } from "../../store/filterSlice";
 
+
 const Filter = () => {
+
+  // const activeFilter = useSelector((state) => state.filter.filter);
+
 
   const dispatch = useDispatch();
 
@@ -14,7 +18,7 @@ const Filter = () => {
   return (
     <div className={classes.filter}>
       <button
-        onClick={() => activeFilterClick("Самый дешевый")}
+        onClick={() => activeFilterClick("Самый дешевый") && console.log('lll')}
         className={classes.low_price}
       >
         Самый дешевый

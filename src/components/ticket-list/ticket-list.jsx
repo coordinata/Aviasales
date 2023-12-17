@@ -4,7 +4,8 @@ import Ticket from "../ticket/ticket";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect } from "react";
-import { Spin } from 'antd';
+import { Spin, Alert } from "antd";
+import { Offline, Online } from "react-detect-offline";
 
 const TicketsList = () => {
   const tickets = useSelector((state) => state.ticket.ticket);
@@ -42,44 +43,119 @@ const TicketsList = () => {
   };
 
   // const checkbox = useSelector((state) => state.checkbox);
+  if (filter === "") {
+    return (
+      <div>
+        <Online>
+          <Alert
+            message="По заданным фильтрам билетов не найдено"
+            type="info"
+            style={{
+              color: "#4a4a4a",
+            }}
+          ></Alert>
+        </Online>
+        <Offline>
+          {" "}
+          <Alert
+            message="Проверьте подключение к интернету"
+            type="error"
+          ></Alert>
+        </Offline>
+      </div>
+    );
+  }
 
   if (filter === "Самый дешевый") {
     return (
       <div>
-        <ul className={classes.tickets_list}>
-          {lowPrice.slice(0, visibleTickets).map((ticket) => (
-            <li key={uuidv4()} className={classes.ticket_li}>
-              <Ticket ticket={ticket} />
-            </li>
-          ))}
-        </ul>
-        {visibleTickets < lowPrice.length && (
-          <button onClick={showMoreTickets} className={classes.button}>
-            Показать еще 5 билетов!
-          </button>
-        )}
+        <Online>
+          <ul className={classes.tickets_list}>
+            {lowPrice.slice(0, visibleTickets).map((ticket) => (
+              <li key={uuidv4()} className={classes.ticket_li}>
+                <Ticket ticket={ticket} />
+              </li>
+            ))}
+          </ul>
+          {visibleTickets < lowPrice.length && (
+            <button onClick={showMoreTickets} className={classes.button}>
+              Показать еще 5 билетов!
+            </button>
+          )}
+        </Online>
+        <Offline>
+          <Alert
+            message="Ничего не найдено. Проверьте подключение к интернету"
+            type="error"
+          ></Alert>
+        </Offline>
       </div>
     );
   }
   if (filter === "Самый быстрый") {
     return (
       <div>
-        <ul className={classes.tickets_list}>
-          {faster.slice(0, visibleTickets).map((ticket) => (
-            <li key={uuidv4()} className={classes.ticket_li}>
-              <Ticket ticket={ticket} />
-            </li>
-          ))}
-        </ul>
-        {visibleTickets < faster.length && (
-          <button onClick={showMoreTickets} className={classes.button}>
-            Показать еще 5 билетов!
-          </button>
-        )}
+        <Online>
+          <ul className={classes.tickets_list}>
+            {faster.slice(0, visibleTickets).map((ticket) => (
+              <li key={uuidv4()} className={classes.ticket_li}>
+                <Ticket ticket={ticket} />
+              </li>
+            ))}
+          </ul>
+          {visibleTickets < faster.length && (
+            <button onClick={showMoreTickets} className={classes.button}>
+              Показать еще 5 билетов!
+            </button>
+          )}
+        </Online>
+        <Offline>
+          <Alert
+            message="Ничего не найдено. Проверьте подключение к интернету"
+            type="error"
+          ></Alert>
+        </Offline>{" "}
       </div>
     );
-  } if (tickets.length === 0) {
-    return(<Spin size="large" className={classes.spin}></Spin>)
+  }
+  if (filter === "Оптимальный") {
+    return (
+      <div>
+        <Online>
+          <ul className={classes.tickets_list}>
+            {tickets.slice(0, visibleTickets).map((ticket) => (
+              <li key={uuidv4()} className={classes.ticket_li}>
+                <Ticket ticket={ticket} />
+              </li>
+            ))}
+          </ul>
+          {visibleTickets < tickets.length && (
+            <button onClick={showMoreTickets} className={classes.button}>
+              Показать еще 5 билетов!
+            </button>
+          )}
+        </Online>
+        <Offline>
+          <Alert
+            message="Ничего не найдено. Проверьте подключение к интернету"
+            type="error"
+          ></Alert>
+        </Offline>{" "}
+      </div>
+    );
+  }
+  if (tickets.length === 0) {
+    <div>
+      <Online>
+        return <Spin size="large" className={classes.spin}></Spin>;
+      </Online>
+      <Offline>
+        <Alert
+          message="Ничего не найдено. Проверьте подключение к интернету"
+          type="error"
+        ></Alert>
+      </Offline>
+    </div>;
   }
 };
 
