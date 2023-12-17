@@ -1,37 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./filter.module.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { filterState } from "../../store/filterSlice";
 
-
 const Filter = () => {
-
   // const activeFilter = useSelector((state) => state.filter.filter);
-
+  const [activeFilter, setActiveFilter] = useState("");
 
   const dispatch = useDispatch();
 
   const activeFilterClick = (filterType) => {
     dispatch(filterState(filterType));
+    setActiveFilter(filterType);
   };
 
   return (
     <div className={classes.filter}>
       <button
-        onClick={() => activeFilterClick("Самый дешевый") && console.log('lll')}
-        className={classes.low_price}
+        onClick={() => activeFilterClick("Самый дешевый")}
+        className={`${classes.low_price} ${
+          activeFilter === "Самый дешевый" ? classes.active : ""
+        }`}
       >
         Самый дешевый
       </button>
       <button
         onClick={() => activeFilterClick("Самый быстрый")}
-        className={classes.faster}
+        className={`${classes.faster} ${
+          activeFilter === "Самый быстрый" ? classes.active : ""
+        }`}
       >
         Самый быстрый
       </button>
       <button
         onClick={() => activeFilterClick("Оптимальный")}
-        className={classes.optimal}
+        className={`${classes.optimal} ${
+          activeFilter === "Оптимальный" ? classes.active : ""
+        }`}
       >
         Оптимальный
       </button>
