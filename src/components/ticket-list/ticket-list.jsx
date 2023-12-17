@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect } from "react";
 import { Spin, Alert } from "antd";
 import { Offline, Online } from "react-detect-offline";
+import { freeze } from "immer";
 
 const TicketsList = () => {
   const checkbox = useSelector((state) => state.checkbox);
@@ -13,6 +14,32 @@ const TicketsList = () => {
   const filter = useSelector((state) => state.filter.filter);
   const [visibleTickets, setVisibleTickets] = useState(5);
   const [filteredTickets, setFilteredTickets] = useState([]);
+  const [lowPrice, setLowPrice] = useState([]);
+  const [faster, setFaster] = useState([]);
+
+  const lowPriceArr = (tickets) => {
+    const flattenedTickets = tickets.flat(); // Распаковываем массив массивов
+    flattenedTickets.sort((a, b) => a.price - b.price);
+
+    return setLowPrice(flattenedTickets);
+  };
+  useEffect(() => lowPriceArr(tickets), [tickets]);
+
+  const fasterArr = (tickets) => {
+    const flattenedTickets = tickets.flat(); // Распаковываем массив массивов
+    flattenedTickets.sort((a, b) => {
+      // Сравниваем общее время перелета
+      return (
+        a.segments[0].duration +
+        a.segments[1].duration -
+        b.segments[0].duration -
+        b.segments[1].duration
+      );
+    });
+
+    return setFaster(flattenedTickets);
+  };
+  useEffect(() => fasterArr(tickets), [tickets]);
 
   const filterTickets = (checkbox, allTickets) => {
     if (!allTickets) return [];
@@ -23,16 +50,32 @@ const TicketsList = () => {
       setFilteredTickets(flattenedTickets);
     } else {
       const filtered = flattenedTickets.filter((ticket) => {
-        if (checkbox.noTransfer && ticket.segments[0].stops.length === 0 && ticket.segments[1].stops.length === 0) {
+        if (
+          checkbox.noTransfer &&
+          ticket.segments[0].stops.length === 0 &&
+          ticket.segments[1].stops.length === 0
+        ) {
           return true;
         }
-        if (checkbox.oneTransfer && ticket.segments[0].stops.length === 1 && ticket.segments[1].stops.length === 1) {
+        if (
+          checkbox.oneTransfer &&
+          ticket.segments[0].stops.length === 1 &&
+          ticket.segments[1].stops.length === 1
+        ) {
           return true;
         }
-        if (checkbox.twoTransfer && ticket.segments[0].stops.length === 2 && ticket.segments[1].stops.length === 2) {
+        if (
+          checkbox.twoTransfer &&
+          ticket.segments[0].stops.length === 2 &&
+          ticket.segments[1].stops.length === 2
+        ) {
           return true;
         }
-        if (checkbox.treeTransfer && ticket.segments[0].stops.length === 3 && ticket.segments[1].stops.length === 3) {
+        if (
+          checkbox.treeTransfer &&
+          ticket.segments[0].stops.length === 3 &&
+          ticket.segments[1].stops.length === 3
+        ) {
           return true;
         }
         return false;
@@ -42,13 +85,14 @@ const TicketsList = () => {
   };
 
   useEffect(() => {
-    filterTickets(checkbox, tickets);
-  }, [checkbox, tickets]);
-
-  useEffect(() => {
-    // Обновляем отфильтрованные билеты при изменении checkbox
-    filterTickets(checkbox, tickets);
-  }, [checkbox, tickets]);
+    if (filter === "Самый дешевый") {
+      filterTickets(checkbox, lowPrice);
+    } else if (filter === "Самый быстрый") {
+      filterTickets(checkbox, faster);
+    } else {
+      filterTickets(checkbox, tickets);
+    }
+  }, [checkbox, lowPrice, filter, tickets, faster]);
 
   const showMoreTickets = () => {
     setVisibleTickets((prevVisibleTickets) => prevVisibleTickets + 5);
