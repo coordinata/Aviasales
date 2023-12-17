@@ -8,41 +8,52 @@ import { Spin, Alert } from "antd";
 import { Offline, Online } from "react-detect-offline";
 
 const TicketsList = () => {
+  const checkbox = useSelector((state) => state.checkbox);
   const tickets = useSelector((state) => state.ticket.ticket);
   const filter = useSelector((state) => state.filter.filter);
-  const [lowPrice, setLowPrice] = useState([]);
-  const [faster, setFaster] = useState([]);
-
-  const lowPriceArr = (tickets) => {
-    const flattenedTickets = tickets.flat(); // Распаковываем массив массивов
-    flattenedTickets.sort((a, b) => a.price - b.price);
-
-    return setLowPrice(flattenedTickets);
-  };
-  useEffect(() => lowPriceArr(tickets), [tickets]);
-
-  const fasterArr = (tickets) => {
-    const flattenedTickets = tickets.flat(); // Распаковываем массив массивов
-    flattenedTickets.sort((a, b) => {
-      // Сравниваем общее время перелета
-      return (
-        a.segments[0].duration +
-        a.segments[1].duration -
-        b.segments[0].duration -
-        b.segments[1].duration
-      );
-    });
-
-    return setFaster(flattenedTickets);
-  };
-  useEffect(() => fasterArr(tickets), [tickets]);
-
   const [visibleTickets, setVisibleTickets] = useState(5);
+  const [filteredTickets, setFilteredTickets] = useState([]);
+
+  const filterTickets = (checkbox, allTickets) => {
+    if (!allTickets) return [];
+
+    const flattenedTickets = allTickets.flat();
+
+    if (checkbox.allTransfer) {
+      setFilteredTickets(flattenedTickets);
+    } else {
+      const filtered = flattenedTickets.filter((ticket) => {
+        if (checkbox.noTransfer && ticket.segments[0].stops.length === 0 && ticket.segments[1].stops.length === 0) {
+          return true;
+        }
+        if (checkbox.oneTransfer && ticket.segments[0].stops.length === 1 && ticket.segments[1].stops.length === 1) {
+          return true;
+        }
+        if (checkbox.twoTransfer && ticket.segments[0].stops.length === 2 && ticket.segments[1].stops.length === 2) {
+          return true;
+        }
+        if (checkbox.treeTransfer && ticket.segments[0].stops.length === 3 && ticket.segments[1].stops.length === 3) {
+          return true;
+        }
+        return false;
+      });
+      setFilteredTickets(filtered);
+    }
+  };
+
+  useEffect(() => {
+    filterTickets(checkbox, tickets);
+  }, [checkbox, tickets]);
+
+  useEffect(() => {
+    // Обновляем отфильтрованные билеты при изменении checkbox
+    filterTickets(checkbox, tickets);
+  }, [checkbox, tickets]);
+
   const showMoreTickets = () => {
     setVisibleTickets((prevVisibleTickets) => prevVisibleTickets + 5);
   };
 
-  // const checkbox = useSelector((state) => state.checkbox);
   if (filter === "") {
     return (
       <div>
@@ -56,7 +67,6 @@ const TicketsList = () => {
           ></Alert>
         </Online>
         <Offline>
-          {" "}
           <Alert
             message="Проверьте подключение к интернету"
             type="error"
@@ -71,13 +81,13 @@ const TicketsList = () => {
       <div>
         <Online>
           <ul className={classes.tickets_list}>
-            {lowPrice.slice(0, visibleTickets).map((ticket) => (
+            {filteredTickets.slice(0, visibleTickets).map((ticket) => (
               <li key={uuidv4()} className={classes.ticket_li}>
                 <Ticket ticket={ticket} />
               </li>
             ))}
           </ul>
-          {visibleTickets < lowPrice.length && (
+          {visibleTickets < filteredTickets.length && (
             <button onClick={showMoreTickets} className={classes.button}>
               Показать еще 5 билетов!
             </button>
@@ -97,13 +107,13 @@ const TicketsList = () => {
       <div>
         <Online>
           <ul className={classes.tickets_list}>
-            {faster.slice(0, visibleTickets).map((ticket) => (
+            {filteredTickets.slice(0, visibleTickets).map((ticket) => (
               <li key={uuidv4()} className={classes.ticket_li}>
                 <Ticket ticket={ticket} />
               </li>
             ))}
           </ul>
-          {visibleTickets < faster.length && (
+          {visibleTickets < filteredTickets.length && (
             <button onClick={showMoreTickets} className={classes.button}>
               Показать еще 5 билетов!
             </button>
@@ -123,13 +133,13 @@ const TicketsList = () => {
       <div>
         <Online>
           <ul className={classes.tickets_list}>
-            {tickets.slice(0, visibleTickets).map((ticket) => (
+            {filteredTickets.slice(0, visibleTickets).map((ticket) => (
               <li key={uuidv4()} className={classes.ticket_li}>
                 <Ticket ticket={ticket} />
               </li>
             ))}
           </ul>
-          {visibleTickets < tickets.length && (
+          {visibleTickets < filteredTickets.length && (
             <button onClick={showMoreTickets} className={classes.button}>
               Показать еще 5 билетов!
             </button>
@@ -145,17 +155,19 @@ const TicketsList = () => {
     );
   }
   if (tickets.length === 0) {
-    <div>
-      <Online>
-        return <Spin size="large" className={classes.spin}></Spin>;
-      </Online>
-      <Offline>
-        <Alert
-          message="Ничего не найдено. Проверьте подключение к интернету"
-          type="error"
-        ></Alert>
-      </Offline>
-    </div>;
+    return (
+      <div>
+        <Online>
+          return <Spin size="large" className={classes.spin}></Spin>;
+        </Online>
+        <Offline>
+          <Alert
+            message="Ничего не найдено. Проверьте подключение к интернету"
+            type="error"
+          ></Alert>
+        </Offline>
+      </div>
+    );
   }
 };
 
