@@ -4,6 +4,7 @@ import Ticket from "../ticket/ticket";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect } from "react";
+import { Spin } from 'antd';
 
 const TicketsList = () => {
   const tickets = useSelector((state) => state.ticket.ticket);
@@ -77,6 +78,8 @@ const TicketsList = () => {
         )}
       </div>
     );
+  } if (tickets.length === 0) {
+    return(<Spin size="large" className={classes.spin}></Spin>)
   }
 };
 
